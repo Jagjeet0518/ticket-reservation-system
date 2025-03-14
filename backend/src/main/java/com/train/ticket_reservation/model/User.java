@@ -16,7 +16,7 @@ import jakarta.persistence.UniqueConstraint;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private long id;
 
     @Column(nullable = false)
@@ -116,5 +116,10 @@ public class User {
         User user = (User) o;
         return id == user.id && username.equals(user.username) && name.equals(user.name)
                 && password.equals(user.password) && email.equals(user.email) && mobile.equals(user.mobile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(id);
     }
 }
