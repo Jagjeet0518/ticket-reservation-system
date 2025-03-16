@@ -1,16 +1,31 @@
 package com.train.ticket_reservation.service;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.stereotype.Service;
 
 import com.train.ticket_reservation.model.Train;
+import com.train.ticket_reservation.repository.TicketRepository;
 import com.train.ticket_reservation.repository.TrainRepository;
 
 @Service
 public class TrainService {
     private final TrainRepository trainRepository;
+    private final TicketRepository ticketRepository;
 
-    public TrainService(TrainRepository trainRepository) {
+    public TrainService(TrainRepository trainRepository, TicketRepository ticketRepository) {
         this.trainRepository = trainRepository;
+        this.ticketRepository = ticketRepository;
+    }
+
+    public int getAvailableSeats(Long trainId) {
+        Train train = trainRepository.findById(trainId)
+                .orElseThrow(() -> new NoSuchElementException("Train not found"));
+
+        int totalSeats = train.getSeats();
+        int bookedSeats = ticketRepository.countBookedSeatsByTrain(trainId);
+
+        return Math.max(totalSeats - bookedSeats, 0);
     }
 
     public Iterable<Train> getAllTrains() {

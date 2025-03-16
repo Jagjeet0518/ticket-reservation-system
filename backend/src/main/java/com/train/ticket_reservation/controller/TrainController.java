@@ -58,4 +58,10 @@ public class TrainController {
     public ResponseEntity<Train> saveTrain(@RequestBody Train train) {
         return ResponseEntity.ok(trainService.saveOrUpdateTrain(train));
     }
+
+    @PostMapping("/delete")
+    public ResponseEntity<Void> deleteTrain(@RequestBody Long id) {
+        trainService.deleteTrain(id);
+        return ResponseEntity.ok().build();
+    }
 }
