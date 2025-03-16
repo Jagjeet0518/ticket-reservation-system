@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.train</groupId>
-	<artifactId>ticket-reservation</artifactId>
+	<artifactId>ticket_reservation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ticket-reservation</name>
+	<name>ticket_reservation</name>
 	<description>Train Reservation System usign Spring Boot.</description>
 	<url/>
 	<licenses>

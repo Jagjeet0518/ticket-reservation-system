@@ -1,38 +1,35 @@
 package com.train.ticket_reservation.model;
 
-import jakarta.persistence.Column;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "user", uniqueConstraints = {
+@Table(name = "users", uniqueConstraints = {
         @UniqueConstraint(columnNames = "username"),
         @UniqueConstraint(columnNames = "email")
 })
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column(nullable = false)
     private String username;
-
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
     private String email;
-
-    @Column(nullable = false)
     private String mobile;
+    private String role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Ticket> tickets;
 
     public User() {
     }
@@ -43,6 +40,7 @@ public class User {
         this.password = password;
         this.email = email;
         this.mobile = mobile;
+        this.role = "user";
     }
 
     // GETTERS
@@ -70,6 +68,10 @@ public class User {
         return mobile;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     // SETTERS
     public void setId(long id) {
         this.id = id;
@@ -95,6 +97,18 @@ public class User {
         this.mobile = mobile;
     }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -104,6 +118,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", mobile='" + mobile + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 
@@ -115,7 +130,8 @@ public class User {
             return false;
         User user = (User) o;
         return id == user.id && username.equals(user.username) && name.equals(user.name)
-                && password.equals(user.password) && email.equals(user.email) && mobile.equals(user.mobile);
+                && password.equals(user.password) && email.equals(user.email) && mobile.equals(user.mobile)
+                && role.equals(user.role);
     }
 
     @Override

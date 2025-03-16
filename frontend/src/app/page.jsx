@@ -1,10 +1,7 @@
 "use client";
 
-import Login from "@/components/auth/Login";
 import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
-import { UserCircle2 } from "lucide-react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 const Home = () => {
@@ -15,7 +12,16 @@ const Home = () => {
         Train Ticket Reservation System
       </h1>
       {
-        status !== "authenticated" ? <Login /> : (
+        status !== "authenticated" ? (
+          <>
+            <h4>Please login to access the system</h4>
+            <Link href="/login">
+              <Button>
+                Login
+              </Button>
+            </Link>
+          </>
+        ) : (
           <>
             <div className="flex flex-wrap gap-2 max-w-lg justify-center">
               <Link href="/trains">
@@ -49,6 +55,15 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
+            {
+              session?.user?.role === "ADMIN" && (
+                <Link href="/dashboard">
+                  <Button>
+                    Admin Dashboard
+                  </Button>
+                </Link>
+              )
+            }
           </>
         )
       }

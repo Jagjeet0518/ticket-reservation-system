@@ -2,6 +2,7 @@ import { Space_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import Layout from "@/components/Layout";
+import { Toaster } from "sonner";
 
 const Sans = Space_Grotesk({
   variable: "--font-space-sans",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark">
       <body className={`${Sans.variable} ${Mono.variable} antialiased`}>
+        <Toaster theme="dark" position="bottom-center" />
         <Providers>
           <Layout>
           {children}

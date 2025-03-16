@@ -2,7 +2,7 @@
 
 const BookTicketDialog = ({ onBook }) => {
     return (
-        
+        <></>
     )
 }
 

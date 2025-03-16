@@ -37,4 +37,8 @@ public class TrainService {
     public Train getTrainByFromAndTo(String from, String to) {
         return trainRepository.findByFromAndTo(from, to);
     }
+
+    public Double getTrainFare(Long id) {
+        return trainRepository.getTrainFare(id);
+    }
 }

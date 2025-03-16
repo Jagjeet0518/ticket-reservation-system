@@ -1,5 +1,6 @@
 package com.train.ticket_reservation.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,7 +9,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "train", uniqueConstraints = {
+@Table(name = "trains", uniqueConstraints = {
         @UniqueConstraint(columnNames = "name"),
         @UniqueConstraint(columnNames = "number")
 })
@@ -18,11 +19,17 @@ public class Train {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "name")
     private String name;
+    @Column(name = "origin")
     private String from;
+    @Column(name = "destination")
     private String to;
+    @Column(name = "train_time")
     private String time;
+    @Column(name = "total_seats")
     private Integer seats;
+    @Column(name = "fare")
     private Double fare;
 
     public Train() {
