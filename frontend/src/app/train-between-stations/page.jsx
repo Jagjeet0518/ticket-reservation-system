@@ -7,6 +7,7 @@ import { MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { toast } from "sonner";
 
 const TrainBetweenStations = () => {
 
@@ -22,11 +23,12 @@ const TrainBetweenStations = () => {
         e.preventDefault();
 
         const response = await fetch("http://localhost:8080/api/trains/between/" + form.origin + "/" + form.destination);
-        if (!response.ok) {
-            toast.error("No Trains Found!");
-        }
         const data = await response.json();
-        setTrains(data);
+        if (data?.trains && data.trains.length > 0) {
+            setTrains(data.trains);
+        } else {
+            toast.error("No trains found!");
+        }
     }
 
     return (
@@ -53,7 +55,7 @@ const TrainBetweenStations = () => {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {trains.length > 0 ? trains.map((train) => (
+                            {trains.map((train) => (
                                 <TableRow key={train.id}>
                                     <TableCell>{train.id}</TableCell>
                                     <TableCell>{train.name}</TableCell>
@@ -63,15 +65,7 @@ const TrainBetweenStations = () => {
                                     <TableCell>{train.seats}</TableCell>
                                     <TableCell>{train.fare}</TableCell>
                                 </TableRow>
-                            )) : (
-                                <TableRow>
-                                    <TableCell colSpan={8}>
-                                        <p className="text-center text-neutral-500">
-                                            No Trains Available
-                                        </p>
-                                    </TableCell>
-                                </TableRow>
-                            )}
+                            ))}
                         </TableBody>
                     </Table>
                 ) : (

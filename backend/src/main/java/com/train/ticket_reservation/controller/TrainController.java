@@ -41,9 +41,9 @@ public class TrainController {
     }
 
     @GetMapping("/between/{from}/{to}")
-    public ResponseEntity<Iterable<Train>> getTrainBetween(@PathVariable String from, @PathVariable String to) {
+    public ResponseEntity<?> getTrainBetween(@PathVariable String from, @PathVariable String to) {
         Iterable<Train> trains = trainService.getTrainBetween(from, to);
-        return trains != null ? ResponseEntity.ok(trains) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(Map.of("trains", trains));
     }
 
     @GetMapping("/fare/{id}")

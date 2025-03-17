@@ -1,6 +1,7 @@
 package com.train.ticket_reservation.service;
 
 import com.train.ticket_reservation.dto.TicketBookingRequest;
+import com.train.ticket_reservation.dto.TicketDTO;
 import com.train.ticket_reservation.model.Ticket;
 import com.train.ticket_reservation.model.Train;
 import com.train.ticket_reservation.model.User;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class TicketService {
@@ -27,6 +29,11 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
         this.trainRepository = trainRepository;
         this.userRepository = userRepository;
+    }
+
+    public TicketDTO getTicketById(Long id) {
+        Optional<Ticket> ticket = ticketRepository.findById(id);
+        return ticket.map(TicketDTO::new).orElse(null);
     }
 
     @Transactional
@@ -49,6 +56,7 @@ public class TicketService {
         ticket.setPassengerEmail(request.getPassengerEmail());
         ticket.setPassengerPhone(request.getPassengerPhone());
         ticket.setBookingTime(LocalDateTime.now());
+        ticket.setBookingDate(request.getBookingDate());
         ticket.setAmount(train.getFare());
         ticket.setStatus(true);
 

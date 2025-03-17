@@ -2,6 +2,7 @@ package com.train.ticket_reservation.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Ticket {
@@ -10,11 +11,11 @@ public class Ticket {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "train_id")
+    @JoinColumn(name = "train_id", referencedColumnName = "id")
     private Train train;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     private String passengerName;
@@ -22,6 +23,7 @@ public class Ticket {
     private String passengerPhone;
     private Integer seatNumber;
     private LocalDateTime bookingTime;
+    private Date bookingDate;
     private Double amount;
     private Boolean status; // true for confirmed, false for cancelled
 
@@ -88,6 +90,14 @@ public class Ticket {
 
     public void setBookingTime(LocalDateTime bookingTime) {
         this.bookingTime = bookingTime;
+    }
+
+    public Date getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(Date bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
     public Double getAmount() {

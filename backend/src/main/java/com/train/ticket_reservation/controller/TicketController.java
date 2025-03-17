@@ -1,6 +1,7 @@
 package com.train.ticket_reservation.controller;
 
 import com.train.ticket_reservation.dto.TicketBookingRequest;
+import com.train.ticket_reservation.dto.TicketDTO;
 import com.train.ticket_reservation.model.Ticket;
 import com.train.ticket_reservation.service.TicketService;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,15 @@ public class TicketController {
 
     public TicketController(TicketService ticketService) {
         this.ticketService = ticketService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TicketDTO> getTicketById(@PathVariable Long id) {
+        TicketDTO ticketDTO = ticketService.getTicketById(id);
+        if (ticketDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(ticketDTO);
     }
 
     @PostMapping("/book")

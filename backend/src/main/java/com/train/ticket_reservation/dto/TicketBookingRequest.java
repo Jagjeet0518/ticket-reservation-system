@@ -1,11 +1,14 @@
 package com.train.ticket_reservation.dto;
 
+import java.util.Date;
+
 public class TicketBookingRequest {
     private Long trainId;
     private Long userId;
     private String passengerName;
     private String passengerEmail;
     private String passengerPhone;
+    private Date bookingDate;
 
     // Getters and setters
     public Long getTrainId() {
@@ -46,5 +49,13 @@ public class TicketBookingRequest {
 
     public void setPassengerPhone(String passengerPhone) {
         this.passengerPhone = passengerPhone;
+    }
+
+    public Date getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(Date bookingDate) {
+        this.bookingDate = bookingDate;
     }
 }
