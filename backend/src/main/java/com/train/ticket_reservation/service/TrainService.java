@@ -1,5 +1,6 @@
 package com.train.ticket_reservation.service;
 
+import java.util.Collections;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
@@ -33,12 +34,31 @@ public class TrainService {
     }
 
     public Train getTrainById(Long id) {
-        return trainRepository.findById(id).orElse(null);
+        return trainRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Train not found"));
     }
 
     public Train saveOrUpdateTrain(Train train) {
-        Train savedTrain = trainRepository.save(train);
-        return savedTrain;
+        if (train.getId() == null) {
+            return trainRepository.save(train);
+        }
+
+        Train existingTrain = trainRepository.findById(train.getId())
+                .orElseThrow(() -> new NoSuchElementException("Train not found"));
+
+        if (train.getName() != null)
+            existingTrain.setName(train.getName());
+        if (train.getFrom() != null)
+            existingTrain.setFrom(train.getFrom());
+        if (train.getTo() != null)
+            existingTrain.setTo(train.getTo());
+        if (train.getTime() != null)
+            existingTrain.setTime(train.getTime());
+        if (train.getSeats() != null)
+            existingTrain.setSeats(train.getSeats());
+        if (train.getFare() != null)
+            existingTrain.setFare(train.getFare());
+
+        return trainRepository.save(existingTrain);
     }
 
     public void deleteTrain(Long id) {
@@ -49,11 +69,16 @@ public class TrainService {
         return trainRepository.findByName(name);
     }
 
-    public Train getTrainByFromAndTo(String from, String to) {
-        return trainRepository.findByFromAndTo(from, to);
+    public Iterable<Train> getTrainBetween(String from, String to) {
+        Iterable<Train> trains = trainRepository.getTrainBetween(from, to);
+        return (trains != null) ? trains : Collections.emptyList();
     }
 
     public Double getTrainFare(Long id) {
-        return trainRepository.getTrainFare(id);
+        Double fare = trainRepository.getTrainFare(id);
+        if (fare == null) {
+            throw new NoSuchElementException("Train not found");
+        }
+        return fare;
     }
 }

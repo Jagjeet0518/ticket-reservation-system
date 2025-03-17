@@ -32,10 +32,10 @@ public class TicketController {
         }
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUserTickets(@PathVariable Long userId) {
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> getUserTickets(@PathVariable String username) {
         try {
-            List<Ticket> tickets = ticketService.getUserTickets(userId);
+            List<Ticket> tickets = ticketService.getUserTickets(username);
             return new ResponseEntity<>(tickets, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

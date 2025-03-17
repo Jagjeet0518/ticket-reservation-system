@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const TrainBetweenStations = () => {
 
@@ -15,6 +16,18 @@ const TrainBetweenStations = () => {
         origin: "",
         destination: "",
     })
+    const [trains, setTrains] = useState([]);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch("http://localhost:8080/api/trains/between/" + form.origin + "/" + form.destination);
+        if (!response.ok) {
+            toast.error("No Trains Found!");
+        }
+        const data = await response.json();
+        setTrains(data);
+    }
 
     return (
         <div className="flex flex-col items-center bg-neutral-900 rounded-2xl p-4 max-w-4xl m-auto gap-6">
@@ -25,26 +38,60 @@ const TrainBetweenStations = () => {
                 </h2>
                 <div className="size-8" />
             </div>
-            <div className="flex flex-col gap-2 items-center w-full">
-
-                <div className="flex gap-2 items-center w-full">
-                    <div className="grid w-full items-center gap-1.5">
-                        <Label htmlFor="origin">From Station</Label>
-                        <Input type="text" id="origin" placeholder="Ex. BBS" onChange={(e) => setForm({ ...form, origin: e.target.value })} />
+            {
+                trains.length > 0 ? (
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>ID</TableHead>
+                                <TableHead>Name</TableHead>
+                                <TableHead>From Station</TableHead>
+                                <TableHead>To Station</TableHead>
+                                <TableHead>Time</TableHead>
+                                <TableHead>Total Seats</TableHead>
+                                <TableHead>Fare</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {trains.length > 0 ? trains.map((train) => (
+                                <TableRow key={train.id}>
+                                    <TableCell>{train.id}</TableCell>
+                                    <TableCell>{train.name}</TableCell>
+                                    <TableCell>{train.from}</TableCell>
+                                    <TableCell>{train.to}</TableCell>
+                                    <TableCell>{train.time}</TableCell>
+                                    <TableCell>{train.seats}</TableCell>
+                                    <TableCell>{train.fare}</TableCell>
+                                </TableRow>
+                            )) : (
+                                <TableRow>
+                                    <TableCell colSpan={8}>
+                                        <p className="text-center text-neutral-500">
+                                            No Trains Available
+                                        </p>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                ) : (
+                    <div className="flex flex-col gap-2 items-center w-full">
+                        <div className="flex gap-2 items-center w-full">
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="origin">From Station</Label>
+                                <Input type="text" id="origin" placeholder="Ex. BBS" onChange={(e) => setForm({ ...form, origin: e.target.value })} />
+                            </div>
+                            <div className="grid w-full items-center gap-1.5">
+                                <Label htmlFor="destination">To Station</Label>
+                                <Input type="text" id="destination" placeholder="Ex. BLR" onChange={(e) => setForm({ ...form, destination: e.target.value })} />
+                            </div>
+                        </div>
+                        <Button className="w-full" variant={"secondary"} onClick={handleSubmit}>
+                            Search
+                        </Button>
                     </div>
-                    <div className="grid w-full items-center gap-1.5">
-                        <Label htmlFor="destination">To Station</Label>
-                        <Input type="text" id="destination" placeholder="Ex. BLR" onChange={(e) => setForm({ ...form, destination: e.target.value })} />
-                    </div>
-                </div>
-                <Button className="w-full" variant={"secondary"} onClick={
-                    () => {
-                        console.log(form);
-                    }
-                }>
-                    Search
-                </Button>
-            </div>
+                )
+            }
         </div>
     )
 }

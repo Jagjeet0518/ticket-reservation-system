@@ -1,5 +1,6 @@
 package com.train.ticket_reservation.controller;
 
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
@@ -29,28 +30,39 @@ public class TrainController {
         return ResponseEntity.ok(trainService.getAllTrains());
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<Train> getTrainByName(@PathVariable String name) {
-        return ResponseEntity.ok(trainService.getTrainByName(name));
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getTrainByName(@PathVariable Long id) {
+        try {
+            Train train = trainService.getTrainById(id);
+            return ResponseEntity.ok(train);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/between/{from}/{to}")
-    public ResponseEntity<Train> getTrainBetween(@PathVariable String from, @PathVariable String to) {
-        return ResponseEntity.ok(trainService.getTrainByFromAndTo(from, to));
+    public ResponseEntity<Iterable<Train>> getTrainBetween(@PathVariable String from, @PathVariable String to) {
+        Iterable<Train> trains = trainService.getTrainBetween(from, to);
+        return trains != null ? ResponseEntity.ok(trains) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/fare/{id}")
-    public ResponseEntity<Double> getTrainFare(@PathVariable Long id) {
-        return ResponseEntity.ok(trainService.getTrainFare(id));
+    public ResponseEntity<?> getTrainFare(@PathVariable Long id) {
+        try {
+            Double fare = trainService.getTrainFare(id);
+            return ResponseEntity.ok(Map.of("fare", fare));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{trainId}/available-seats")
     public ResponseEntity<?> checkSeatAvailability(@PathVariable Long trainId) {
         try {
             int availableSeats = trainService.getAvailableSeats(trainId);
-            return new ResponseEntity<>(availableSeats, HttpStatus.OK);
+            return ResponseEntity.ok(Map.of("seats", availableSeats));
         } catch (NoSuchElementException e) {
-            return new ResponseEntity<>("Train not found", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 

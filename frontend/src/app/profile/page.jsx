@@ -11,12 +11,24 @@ const Profile = () => {
     const { data: session, status } = useSession();
     const router = useRouter();
     const [user, setUser] = useState({});
+    const [bookingHistory, setBookingHistory] = useState([]);
+
+    const getBookingHistory = async () => {
+        const response = await fetch("http://localhost:8080/api/tickets/user/" + session?.user?.username);
+        if (response.ok) {
+            const data = await response.json();
+            setBookingHistory(data);
+        }
+        
+    }
 
     useEffect(() => {
-        session &&
-            setUser(session.user);
+        if (session) {
+            setUser(session?.user);
+            getBookingHistory();
+        }
     }, [session]);
-
+    
     return (
         <div className="flex flex-col items-center bg-neutral-900 rounded-2xl p-4 max-w-4xl w-full m-auto gap-6">
             <div className="flex justify-between items-center w-full">
@@ -37,6 +49,17 @@ const Profile = () => {
                     <p className="text-neutral-400">
                         {user.name}
                     </p>
+                    <span className="text-neutral-400 text-sm">
+                        {user.role == "ADMIN" ? "Role: Admin" : "Role: User"}
+                    </span>
+                </div>
+                <div className="grid items-center">
+                    <h3 className="text-lg font-medium">
+                        Username
+                    </h3>
+                    <p className="text-neutral-400">
+                        {user.username}
+                    </p>
                 </div>
                 <div className="grid items-center">
                     <h3 className="text-lg font-medium">
@@ -44,6 +67,14 @@ const Profile = () => {
                     </h3>
                     <p className="text-neutral-400">
                         {user.email}
+                    </p>
+                </div>
+                <div className="grid items-center">
+                    <h3 className="text-lg font-medium">
+                        Mobile
+                    </h3>
+                    <p className="text-neutral-400">
+                        {user.mobile}
                     </p>
                 </div>
             </div>
@@ -66,7 +97,7 @@ const Profile = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        
+
                     </TableBody>
                 </Table>
             </div>

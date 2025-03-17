@@ -57,8 +57,8 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
-    public List<Ticket> getUserTickets(Long userId) {
-        User user = userRepository.findById(userId)
+    public List<Ticket> getUserTickets(String username) {
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
         return ticketRepository.findByUserAndStatusTrue(user);
     }

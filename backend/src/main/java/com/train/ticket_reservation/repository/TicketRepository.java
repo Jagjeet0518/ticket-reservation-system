@@ -9,8 +9,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
+
+    @Query("SELECT t FROM Ticket t WHERE t.user.username = :username AND t.status = true")
     List<Ticket> findByUserAndStatusTrue(User user);
 
+    @Query("SELECT t FROM Ticket t WHERE t.train.id = :trainId AND t.status = true")
     List<Ticket> findByTrainAndStatusTrue(Train train);
 
     @Query("SELECT COUNT(t) FROM Ticket t WHERE t.train.id = :trainId AND t.status = true")

@@ -54,7 +54,7 @@ const Trains = () => {
                             <TableCell>{train.name}</TableCell>
                             <TableCell>{train.from}</TableCell>
                             <TableCell>{train.to}</TableCell>
-                            <TableCell>{train.departure}</TableCell>
+                            <TableCell>{train.time}</TableCell>
                             <TableCell>{train.seats}</TableCell>
                             <TableCell>{train.fare}</TableCell>
                             <TableCell>
