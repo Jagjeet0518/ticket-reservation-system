@@ -17,17 +17,13 @@ export default function Page() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        const data = {
-            id: form.trainNo,
-        }
 
         const response = await fetch("http://localhost:8080/api/trains/delete", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(form.trainNo),
         });
 
         if (response.ok) {
@@ -48,7 +44,7 @@ export default function Page() {
             <div className="flex flex-col gap-2 items-center w-full">
                 <div className="grid w-full items-center gap-1.5">
                     <Label htmlFor="tno">Train Number</Label>
-                    <Input type="text" id="tno" placeholder="Ex. 123" onChange={(e) => setForm({ ...form, trainNo: e.target.value })} value={form.trainNo} />
+                    <Input type="number" id="tno" placeholder="Ex. 123" onChange={(e) => setForm({ ...form, trainNo: e.target.value })} value={form.trainNo} />
                 </div>
                 <Button className="w-full" variant={"secondary"} onClick={handleSubmit}>
                     Delete Train

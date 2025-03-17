@@ -62,6 +62,7 @@ public class TrainService {
     }
 
     public void deleteTrain(Long id) {
+        ticketRepository.deleteByTrainId(id);
         trainRepository.deleteById(id);
     }
 

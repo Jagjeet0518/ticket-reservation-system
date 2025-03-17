@@ -7,7 +7,7 @@ const Dashboard = () => {
     return (
         <div className="flex flex-col gap-4 items-center justify-center m-auto">
             <h1 className="text-3xl font-bold">
-                Train Ticket Reservation System
+                Admin Dashboard
             </h1>
 
             <div className="flex flex-wrap gap-2 max-w-lg justify-center">
