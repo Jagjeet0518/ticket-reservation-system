@@ -118,12 +118,7 @@ Contributions are welcome! Please follow these steps to contribute:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is for educational purposes. Feel free to use and modify it.
 
-## Contact
 
-For any questions or suggestions, feel free to reach out:
 
-- GitHub: [SambitPruthwiraj](https://github.com/SambitPruthwiraj)
-- Email: sambirpruthwiraj@gmail.com
-```
